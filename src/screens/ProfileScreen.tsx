@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useAuth } from '../contexts/AuthContext'; // Import the useAuth hook
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import LoginScreen from './LoginScreen'; // Import your LoginScreen
 
 const ProfileScreen: React.FC = () => {
   const { user, logout } = useAuth(); // Use the Auth context
-
-  console.log("User:", user); // Add this line for debugging
+  const navigation = useNavigation(); // Simple use of navigation hook
 
   const handleLogout = () => {
     Alert.alert(
@@ -13,7 +14,13 @@ const ProfileScreen: React.FC = () => {
       "Are you sure you want to logout?",
       [
         { text: "Cancel", style: "cancel" },
-        { text: "OK", onPress: () => logout() }
+        { 
+          text: "OK", 
+          onPress: () => {
+            logout(); // Log the user out
+            navigation.navigate('Login'); // Navigate to LoginScreen
+          }
+        }
       ]
     );
   };
@@ -40,27 +47,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20, // Add padding to the container
-    backgroundColor: '#F7F9FC', // Light background color for iOS
+    padding: 20,
+    backgroundColor: '#F7F9FC',
   },
   welcomeText: {
     fontSize: 28,
     fontWeight: '600',
     marginBottom: 10,
-    color: '#333', // Darker text color for better contrast
+    color: '#333',
   },
   emailText: {
     fontSize: 20,
     marginBottom: 20,
-    color: '#555', // Slightly lighter text for email
+    color: '#555',
   },
   logoutButton: {
-    backgroundColor: '#007bff', // Primary color for the button
+    backgroundColor: '#007bff',
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    elevation: 3, // Add shadow for Android
-    shadowColor: '#000', // Shadow for iOS
+    elevation: 3,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
   },
   loginPromptText: {
     fontSize: 20,
-    color: '#777', // Lighter color for prompt text
+    color: '#777',
   },
 });
 

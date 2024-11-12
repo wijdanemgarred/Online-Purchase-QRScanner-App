@@ -1,6 +1,5 @@
-// ProductDetailScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, Image, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, Image, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useCart } from '../contexts/CartContext'; // Adjust the path as needed
@@ -24,6 +23,7 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ route }) => {
   const { addToCart } = useCart(); // Use the CartContext
 
   const [quantity, setQuantity] = useState<number>(1);
+  const [isPressed, setIsPressed] = useState(false);
 
   const handleAddToCart = () => {
     addToCart(product, quantity); // Ensure addToCart accepts product and quantity
@@ -43,7 +43,15 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ route }) => {
         <Button title="+" onPress={() => setQuantity(quantity + 1)} />
       </View>
 
-      <Button title="Add to Cart" onPress={handleAddToCart} />
+      {/* Add TouchableOpacity with onPressIn and onPressOut */}
+      <TouchableOpacity
+        style={[styles.addButton, isPressed && styles.addButtonPressed]}
+        onPress={handleAddToCart}
+        onPressIn={() => setIsPressed(true)}
+        onPressOut={() => setIsPressed(false)}
+      >
+        <Text style={styles.addButtonText}>Add to Cart</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -80,6 +88,21 @@ const styles = StyleSheet.create({
   quantity: {
     marginHorizontal: 10,
     fontSize: 18,
+  },
+  addButton: {
+    backgroundColor: '#007BFF',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  addButtonPressed: {
+    backgroundColor: '#0056b3', // Darker shade for pressed state
+  },
+  addButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

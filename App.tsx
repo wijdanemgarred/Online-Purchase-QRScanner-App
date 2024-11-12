@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 import ProductDetailScreen from './src/screens/ProductDetailScreen';
 import { CartProvider } from './src/contexts/CartContext';
 import { AuthProvider } from './src/contexts/AuthContext';
+import CartScreen from './src/screens/CartScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -61,6 +62,15 @@ const HomeTabs: React.FC = () => {
         }}
       />
       <Tab.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="cart-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -78,15 +88,7 @@ const HomeTabs: React.FC = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="Logout"
-        component={LogoutScreen} // This component will handle logout
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="log-out-outline" color={color} size={size} />
-          ),
-        }}
-      />
+      
     </Tab.Navigator>
   );
 };
