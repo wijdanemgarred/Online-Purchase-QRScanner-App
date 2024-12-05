@@ -1,17 +1,11 @@
 // HomeScreen.tsx
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { Product, products } from '../data/productsData';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { Image } from 'react-native';
-
-
-import A from '../../assets/A.jpg'; // Adjust the path as necessary
-import B from '../../assets/B.jpg'; // Adjust the path as necessary
-import C from '../../assets/C.jpg'; // Adjust the path as necessary
-
-
+import { db } from '../../firebase'; // Import your Firebase config file
+import { collection, getDocs } from 'firebase/firestore';
+import { Product } from '../interfaces/Product';  // Import the Product interface
 
 type RootStackParamList = {
   ProductList: undefined;
@@ -21,18 +15,36 @@ type RootStackParamList = {
 type ProductListScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ProductList'>;
 type ProductListScreenRouteProp = RouteProp<RootStackParamList, 'ProductList'>;
 
-
-
 interface ProductListScreenProps {
   navigation: ProductListScreenNavigationProp;
   route: ProductListScreenRouteProp;
 }
-////////OLD HOMESCREEN
+
 const ProductListScreen: React.FC<ProductListScreenProps> = ({ navigation }) => {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  // Fetch products from Firestore when the component mounts
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'products')); // 'products' is the collection name
+        const productList: Product[] = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Product[];
+        setProducts(productList);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const renderItem = ({ item }: { item: Product }) => (
     <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product: item })}>
       <View style={styles.item}>
-        <Image source={A} style={styles.image} />
+        <Image source={{ uri: item.imageUrl }} style={styles.image} />
         <View>
           <Text style={styles.name}>{item.name}</Text>
           <Text style={styles.price}>${item.price.toFixed(2)}</Text>
@@ -44,7 +56,7 @@ const ProductListScreen: React.FC<ProductListScreenProps> = ({ navigation }) => 
   return (
     <FlatList
       data={products}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item.id}
       renderItem={renderItem}
     />
   );
