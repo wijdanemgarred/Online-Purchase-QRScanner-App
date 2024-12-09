@@ -1,11 +1,11 @@
-// HomeScreen.tsx
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { db } from '../../firebase'; // Import your Firebase config file
+import { db } from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
-import { Product } from '../interfaces/Product';  // Import the Product interface
+import images from '../utils/images'; // Import the image map
+import { Product } from '../interfaces/Product'; // Import the Product interface
 
 type RootStackParamList = {
   ProductList: undefined;
@@ -23,11 +23,10 @@ interface ProductListScreenProps {
 const ProductListScreen: React.FC<ProductListScreenProps> = ({ navigation }) => {
   const [products, setProducts] = useState<Product[]>([]);
 
-  // Fetch products from Firestore when the component mounts
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'products')); // 'products' is the collection name
+        const querySnapshot = await getDocs(collection(db, 'products'));
         const productList: Product[] = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -44,7 +43,10 @@ const ProductListScreen: React.FC<ProductListScreenProps> = ({ navigation }) => 
   const renderItem = ({ item }: { item: Product }) => (
     <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product: item })}>
       <View style={styles.item}>
-        <Image source={{ uri: item.imageUrl }} style={styles.image} />
+        <Image
+          source={images[item.imageUrl]} // Use fallback if image not found
+          style={styles.image}
+        />
         <View>
           <Text style={styles.name}>{item.name}</Text>
           <Text style={styles.price}>${item.price.toFixed(2)}</Text>
@@ -63,6 +65,23 @@ const ProductListScreen: React.FC<ProductListScreenProps> = ({ navigation }) => 
 };
 
 const styles = StyleSheet.create({
+  listContainer: {
+    padding: 10,
+    backgroundColor: '#f9f9f9',
+  },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginVertical: 8,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+  },
   item: {
     flexDirection: 'row',
     padding: 10,
@@ -70,16 +89,24 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   image: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
+    width: 70,
+    height: 70,
+    borderRadius: 10,
+    marginRight: 15,
+    backgroundColor: '#e0e0e0', // Fallback background color for loading
+  },
+  cardContent: {
+    flex: 1,
   },
   name: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#333',
   },
   price: {
-    color: '#888',
+    fontSize: 14,
+    color: '#666',
+    marginTop: 5,
   },
 });
 

@@ -70,15 +70,7 @@ const HomeTabs: React.FC = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="person-outline" color={color} size={size} />
-          ),
-        }}
-      />
+     
       <Tab.Screen
         name="Settings"
         component={SettingsScreen}
@@ -88,7 +80,15 @@ const HomeTabs: React.FC = () => {
           ),
         }}
       />
-      
+       <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="person-outline" color={color} size={size} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };

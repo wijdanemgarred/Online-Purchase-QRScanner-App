@@ -1,7 +1,7 @@
 interface Product {
-    id: string;
-    name: string;
-    price: number;
-    imageUrl: string;
-  }
-  
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  imageUrl: string;
+}

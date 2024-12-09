@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useCart } from '../contexts/CartContext'; // Adjust the path as needed
-
-import A from '../../assets/A.jpg';
+import { Product } from '../interfaces/Product'; // Import the Product interface
+import { useCart } from '../contexts/CartContext'; // Adjust path as needed
+import images from '../utils/images'; // Import the image map
 
 type RootStackParamList = {
-  ProductDetail: { product: { id: number; name: string; price: number; description: string; image: string } };
+  ProductList: undefined;
+  ProductDetail: { product: Product };
 };
 
 type ProductDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ProductDetail'>;
@@ -18,40 +19,54 @@ interface ProductDetailScreenProps {
   route: ProductDetailScreenRouteProp;
 }
 
-const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ route }) => {
-  const { product } = route.params;
-  const { addToCart } = useCart(); // Use the CartContext
+const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ route, navigation }) => {
+  const { product } = route.params; // Receive the product object
+  const { addToCart } = useCart(); // Use the CartContext to handle adding to cart
 
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity, setQuantity] = useState(1);
   const [isPressed, setIsPressed] = useState(false);
 
   const handleAddToCart = () => {
-    addToCart(product, quantity); // Ensure addToCart accepts product and quantity
+    addToCart(product, quantity); // Add the product to the cart with quantity
     Alert.alert("Added to Cart", `${quantity} ${product.name}(s) added to your cart!`);
   };
 
   return (
     <View style={styles.container}>
-      <Image source={A} style={styles.image} />
-      <Text style={styles.name}>{product.name}</Text>
-      <Text style={styles.price}>${product.price.toFixed(2)}</Text>
-      <Text style={styles.description}>{product.description}</Text>
+      <Image source={images[product.imageUrl]} style={styles.image} />
 
-      <View style={styles.quantityContainer}>
-        <Button title="-" onPress={() => setQuantity(quantity > 1 ? quantity - 1 : 1)} />
-        <Text style={styles.quantity}>{quantity}</Text>
-        <Button title="+" onPress={() => setQuantity(quantity + 1)} />
+      <View style={styles.content}>
+        <Text style={styles.name}>{product.name}</Text>
+        <Text style={styles.price}>${product.price.toFixed(2)}</Text>
+        <Text style={styles.description}>{product.description}</Text>
+
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity
+            style={styles.quantityButton}
+            onPress={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+          >
+            <Text style={styles.buttonText}>-</Text>
+          </TouchableOpacity>
+
+          <Text style={styles.quantity}>{quantity}</Text>
+
+          <TouchableOpacity
+            style={styles.quantityButton}
+            onPress={() => setQuantity(quantity + 1)}
+          >
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={[styles.addButton, isPressed && styles.addButtonPressed]}
+          onPress={handleAddToCart}
+          onPressIn={() => setIsPressed(true)}
+          onPressOut={() => setIsPressed(false)}
+        >
+          <Text style={styles.addButtonText}>Add to Cart</Text>
+        </TouchableOpacity>
       </View>
-
-      {/* Add TouchableOpacity with onPressIn and onPressOut */}
-      <TouchableOpacity
-        style={[styles.addButton, isPressed && styles.addButtonPressed]}
-        onPress={handleAddToCart}
-        onPressIn={() => setIsPressed(true)}
-        onPressOut={() => setIsPressed(false)}
-      >
-        <Text style={styles.addButtonText}>Add to Cart</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -59,24 +74,39 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f9f9f9',
     padding: 16,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
-    width: 200,
-    height: 200,
-    marginBottom: 10,
+    width: 250,
+    height: 250,
+    borderRadius: 15,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  content: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
   name: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-  },
-  price: {
-    fontSize: 20,
-    color: '#888',
+    color: '#333',
     marginBottom: 10,
   },
+  price: {
+    fontSize: 22,
+    color: '#007BFF',
+    marginBottom: 15,
+  },
   description: {
+    fontSize: 16,
+    color: '#666',
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -84,25 +114,42 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
+    justifyContent: 'center',
+  },
+  quantityButton: {
+    backgroundColor: '#007BFF',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  buttonText: {
+    fontSize: 24,
+    color: '#fff',
   },
   quantity: {
-    marginHorizontal: 10,
-    fontSize: 18,
+    fontSize: 20,
+    color: '#333',
+    paddingHorizontal: 10,
   },
   addButton: {
-    backgroundColor: '#007BFF',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    backgroundColor: '#28a745',
+    paddingVertical: 15,
+    width: '80%',
+    borderRadius: 8,
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   addButtonPressed: {
-    backgroundColor: '#0056b3', // Darker shade for pressed state
+    backgroundColor: '#218838',
   },
   addButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 18,
+    color: '#fff',
     fontWeight: 'bold',
-    textAlign: 'center',
   },
 });
 
