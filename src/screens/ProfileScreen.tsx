@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { useAuth } from '../contexts/AuthContext'; // Import the useAuth hook
+import { useAuth } from '../contexts/AuthContext'; // Import the useAuth hook for Firebase auth
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
-import LoginScreen from './LoginScreen'; // Import your LoginScreen
+import { auth } from 'firebase/firestore'; // Firebase auth import
 
 const ProfileScreen: React.FC = () => {
-  const { user, logout } = useAuth(); // Use the Auth context
-  const navigation = useNavigation(); // Simple use of navigation hook
+  const { user, logout } = useAuth(); // Use the Auth context for user and logout function
+  const navigation = useNavigation(); // Navigation hook for screen transitions
 
+  // Handle logout with confirmation dialog
   const handleLogout = () => {
     Alert.alert(
       "Logout",
@@ -17,8 +18,8 @@ const ProfileScreen: React.FC = () => {
         { 
           text: "OK", 
           onPress: () => {
-            logout(); // Log the user out
-            navigation.navigate('Login'); // Navigate to LoginScreen
+            logout(); // Logout the user from Firebase
+            navigation.navigate('Login'); // Navigate to LoginScreen after logout
           }
         }
       ]
@@ -29,7 +30,7 @@ const ProfileScreen: React.FC = () => {
     <View style={styles.container}>
       {user ? (
         <>
-          <Text style={styles.welcomeText}>Welcome!</Text>
+          <Text style={styles.welcomeText}>Welcome, {user.displayName || 'User'}!</Text>
           <Text style={styles.emailText}>Email: {user.email}</Text>
           <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
             <Text style={styles.buttonText}>Logout</Text>

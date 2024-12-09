@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginScreen from './src/screens/LoginScreen'; // Adjust the import path as necessary
 import HomeScreen from './src/screens/HomeScreen'; // Import your HomeScreen
 import ProfileScreen from './src/screens/ProfileScreen'; // Import ProfileScreen
-import SettingsScreen from './src/screens/SettingsScreen'; // Import SettingsScreen
+import QRScannerScreen from './src/screens/QRScannerScreen'; // Import SettingsScreen
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 import ProductDetailScreen from './src/screens/ProductDetailScreen';
 import { CartProvider } from './src/contexts/CartContext';
@@ -39,8 +39,7 @@ const App: React.FC = () => {
         options={{ title: 'Détails du Produit' }} />
       </Stack.Navigator>
 
-
-
+      
     </NavigationContainer>
     </CartProvider>
     </AuthProvider>
@@ -72,11 +71,11 @@ const HomeTabs: React.FC = () => {
       />
      
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Scan QR"
+        component={QRScannerScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="settings-outline" color={color} size={size} />
+            <Icon name="qr-code-outline" color={color} size={size} />
           ),
         }}
       />
