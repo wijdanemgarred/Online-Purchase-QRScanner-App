@@ -112,5 +112,4 @@ Contributions are welcome! Please follow these steps:
 
 - **Your Name**  
   - [GitHub](https://github.com/wijdanemgarred)  
-  - [LinkedIn](https://linkedin.com/in/wijdanemgarred)
-```
+  - [LinkedIn](https://www.linkedin.com/in/wijdane-mgarred/)
