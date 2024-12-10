@@ -110,6 +110,6 @@ Contributions are welcome! Please follow these steps:
 
 ### Author
 
-- **Your Name**  
+- **Wijdane Mgarred**  
   - [GitHub](https://github.com/wijdanemgarred)  
   - [LinkedIn](https://www.linkedin.com/in/wijdane-mgarred/)
