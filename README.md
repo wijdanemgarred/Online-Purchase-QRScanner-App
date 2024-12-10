@@ -1,11 +1,3 @@
-### Suggested Project Name:  
-**"React Native QRScanner App"**
-
----
-
-### README.md Template for Your GitHub Repository:  
-
-```markdown
 # React Native QRScanner App
 
 A React Native application featuring QR code scanning, Firebase authentication, and product search functionality. This app allows users to scan QR codes to retrieve product details, manage authentication, and search for products by name using Firebase Firestore.
@@ -48,7 +40,7 @@ Ensure you have the following installed:
    ```bash
    git clone https://github.com/your-username/react-native-qrscanner-app.git
    cd react-native-qrscanner-app
-   ```
+
 
 2. Install dependencies:
    ```bash
@@ -89,19 +81,6 @@ Ensure you have the following installed:
 
 ---
 
-## Folder Structure
-
-```
-src/
-├── components/         # Reusable UI components
-├── contexts/           # AuthContext for Firebase authentication
-├── screens/            # Individual app screens (Login, Profile, QRScanner, etc.)
-├── firebase.js         # Firebase configuration and initialization
-├── navigation/         # App navigation setup
-├── App.tsx             # Root component
-```
-
----
 
 ## Contributing
 
