@@ -98,15 +98,7 @@ Contributions are welcome! Please follow these steps:
 
 ---
 
-## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for more information.
-
----
-
-## Acknowledgements
-
-- [
 
 ## Acknowledgements
 
@@ -119,8 +111,6 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 ### Author
 
 - **Your Name**  
-  - [GitHub](https://github.com/your-username)  
-  - [LinkedIn](https://linkedin.com/in/your-profile)
+  - [GitHub](https://github.com/wijdanemgarred)  
+  - [LinkedIn](https://linkedin.com/in/wijdanemgarred)
 ```
-
-Replace `your-username`, `your-profile`, and other placeholders with your actual information. This README provides a professional overview of your project and is perfect for sharing on GitHub.
