@@ -11,7 +11,7 @@ A React Native application featuring QR code scanning, Firebase authentication, 
 - **QR Code Scanning**: Leverages the device's camera to scan QR codes and fetch product details.
 - **Firebase Authentication**: Enables user login/logout with Firebase Authentication.
 - **Product Search**: Allows users to search for products by name stored in Firebase Firestore.
-- **Online Shopping (Achat en ligne)**: Users can browse product details and purchase them directly through the app.
+- **Online Shopping**: Users can browse product details and purchase them directly through the app.
 - **User Profile Management**: Displays logged-in user information and logout functionality.
 - **Modern UI**: Clean and user-friendly interface built with React Native.
 
